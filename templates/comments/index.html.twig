@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}List of Comments!{% endblock %}
+
+{% block main %}
+
+{% for cases in supportcases %}
+    <div>
+        <span class="fw-bold">Summary</span> : {{ cases.summary  }}
+        <br />
+        <span class="fw-bold">Description</span> :{{ cases.description  }}
+    </div>
+{% endfor %}
+
+<div class="mt-4 mb-4">
+    <h3>List of Comments</h3>
+
+    {% if comments is empty %}
+        <div>No comments added</div>
+    {% endif %}
+
+
+    {% for comment in comments %}
+        <div>
+            {{ comment.description  }}
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block sidebar %}
+ {{ include('./partial/navigate.html.twig') }}
+{% endblock %}

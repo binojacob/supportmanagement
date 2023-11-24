@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Log in!{% endblock %}
+
+{% block main %}
+    {{ include('./partial/welcome.html.twig') }}
+    <h3> Add Comments </h3>
+    {% for cases in supportcases %}
+        <div>
+           <span class="fw-bold">Summary</span> : {{ cases.summary  }}
+            <br />
+            <span class="fw-bold">Description</span> :{{ cases.description  }}
+        </div>
+    {% endfor %}
+
+
+{{ form_start(form, {attr: {'novalidate': 'novalidate','class':'mt-4'}}) }}
+
+{{ form_end(form) }}
+
+{% endblock %}
+
+{% block sidebar %}
+ {{ include('./partial/navigate.html.twig') }}
+{% endblock %}

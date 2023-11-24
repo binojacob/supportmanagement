@@ -1,0 +1,8 @@
+<div class="text-end">
+{% if  app.user.username is defined %}
+   Welcome <strong>{{~app.user.username}}</strong>
+{% else %}
+    Anonymous user
+{% endif %}
+</div>
+

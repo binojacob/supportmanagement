@@ -72,7 +72,6 @@ class SupportCaseController extends AbstractController
     #[Route('/addcomments/{case}', name: 'app_add_comments')]
     public function addComments(
         SupportCase $case,SupportCaseRepository $support,
-        CommentsRepository $commentRepo,
         Request $request,EntityManagerInterface $em) {
         $case_id = $case->getId();
 
@@ -86,13 +85,9 @@ class SupportCaseController extends AbstractController
             $em->persist($data);
             $em->flush();
         }
-
-        $commentList = $commentRepo->findBy(['supportcase'=>$case_id ]);
-        
         
         return $this->render('support_case/addcomments.html.twig', [
             'supportcases' => $cases,
-            'comments' => $commentList,
             'form'=> $form
         ]);
     }

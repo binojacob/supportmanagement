@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Log in!{% endblock %}
+
+{% block main %}
+<h3> Add Support case</h3>
+
+
+<div class="mb-4">
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Summary</th>
+      <th scope="col">Userame</th>
+      <th scope="col">actions</th>
+    </tr>
+  </thead>
+  <tbody>
+   {% for cases in supportcases %}
+    <tr>
+      <th scope="row">{{ cases.summary  }}</th>
+      <td> {{cases.user.fullName }}</td>
+      <td>
+          {% if(is_granted('ROLE_SPECIALIST') or is_granted('ROLE_ADMIN')) %}
+             <a href={{ path("app_del_case",{'case':  cases.id}) }} class="btn btn-primary btn-sm active" role="button" aria-pressed="true"> Delete </a>
+             <a href={{ path("app_edit_case",{'case':  cases.id}) }} class="btn btn-primary btn-sm active" role="button" aria-pressed="true"> Edit </a>
+          {% endif %}
+      </td>
+    
+    </tr>
+   {% endfor %}
+
+  </tbody>
+</table>
+</div>
+
+
+{{ form_start(form, {attr: {'novalidate': 'novalidate','class':'mt-4'}}) }}
+
+{{ form_end(form) }}
+
+{% endblock %}
+
+{% block sidebar %}
+ {{ include('./partial/navigate.html.twig') }}
+{% endblock %}

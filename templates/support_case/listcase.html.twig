@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}List All Support Cases!{% endblock %}
+
+{% block main %}
+    <h3>List of Support Cases</h3>
+    {% for cases in supportcases %}
+        <div style="float:left;width:55%">{{ cases.summary  }}</div>
+        <div>
+            <a href={{ path("app_comments",{'case':  cases.id}) }} class="btn btn-primary btn-sm active" role="button" aria-pressed="true">List Comments</a>
+            <a href={{ path("app_add_comments",{'case':  cases.id}) }} class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Add Comments</a>
+        </div>
+        <br />
+    {% endfor %}
+
+{% endblock %}
+
+{% block sidebar %}
+ {{ include('./partial/navigate.html.twig') }}
+{% endblock %}
