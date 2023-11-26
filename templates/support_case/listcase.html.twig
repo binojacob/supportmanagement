@@ -3,15 +3,68 @@
 {% block title %}List All Support Cases!{% endblock %}
 
 {% block main %}
+    {{ include('./partial/welcome.html.twig') }}
     <h3>List of Support Cases</h3>
-    {% for cases in supportcases %}
-        <div style="float:left;width:55%">{{ cases.summary  }}</div>
-        <div>
-            <a href={{ path("app_comments",{'case':  cases.id}) }} class="btn btn-primary btn-sm active" role="button" aria-pressed="true">List Comments</a>
-            <a href={{ path("app_add_comments",{'case':  cases.id}) }} class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Add Comments</a>
+    
+    {{ form_start(form, {attr: {'novalidate': 'novalidate'}}) }}
+    <div class="row g-3 align-items-center col-4  mb-4 ">
+        <div class="col-auto">
+            {{ form_label(form.status, 'Filter By Status')}}
         </div>
-        <br />
-    {% endfor %}
+        <div class="col-auto">
+            {{ form_widget(form.status,{'attr': {'style': 'float:left'}}) }}
+        </div>
+        <div class="col-auto">
+            <span id="passwordHelpInline" class="form-text">
+                {{ form_widget(form.Submit,{'attr' : {'class' : 'btn btn-primary btn-sm active' }}) }}
+            </span>
+        </div>
+        
+    </div>
+    {{ form_end(form) }}
+
+    {% if supportcases|length > 0 %}
+        <table class="table mt-4">
+            <thead>
+            <tr>
+                <th scope="col">Summary</th>
+                <th scope="col">User</th>
+                <th scope="col">Status</th>
+                <th scope="col">actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for cases in supportcases %}
+            <tr>
+                <th scope="row">{{ cases.summary }}</th>
+                <td> {{cases.user.fullName }}</td>
+                <td> {{cases.status }}</td>
+                <td>
+                    <a href={{ path("app_comments",{'case':  cases.id}) }} class="btn btn-primary btn-sm active" role="button" aria-pressed="true">List Comments</a>
+                    <a href={{ path("app_add_comments",{'case':  cases.id}) }} class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Add Comments</a>
+
+
+                    {% if(is_granted('ROLE_SPECIALIST') or is_granted('ROLE_ADMIN')) %}
+                    <a href={{ path("app_del_case",{'case':  cases.id}) }} class="btn btn-primary btn-sm active" role="button" aria-pressed="true"> Delete </a>
+                    <a href={{ path("app_edit_case",{'case':  cases.id}) }} class="btn btn-primary btn-sm active" role="button" aria-pressed="true"> Edit </a>
+
+                    {% elseif (userId == cases.user.id) %}
+                    <a href={{ path("app_del_case",{'case':  cases.id}) }} class="btn btn-primary btn-sm active" role="button" aria-pressed="true"> Delete </a>
+                    <a href={{ path("app_edit_case",{'case':  cases.id}) }} class="btn btn-primary btn-sm active" role="button" aria-pressed="true"> Edit </a>
+
+                    {% endif %}
+                </td>
+            
+            </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+
+
+    {% endif %}
+
+
 
 {% endblock %}
 

@@ -3,7 +3,7 @@
 {% block body_id 'register' %}
 
 {% block main %}
-
+    {{ include('./partial/welcome.html.twig') }}
 
     <div class="row" {{ stimulus_controller('login') }}{# @see assets/controllers/login-controller.js #}>
         <div class="col-sm-7">
@@ -26,6 +26,7 @@
     </div>
 {% endblock %}
 
+
 {% block sidebar %}
-<a href={{ path("app_admin") }}>Home Page </a>
+ {{ include('./partial/navigate.html.twig') }}
 {% endblock %}

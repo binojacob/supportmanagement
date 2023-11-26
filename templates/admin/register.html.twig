@@ -3,7 +3,7 @@
 {% block body_id 'register' %}
 
 {% block main %}
-
+{{ include('./partial/welcome.html.twig') }}
 
     {#
         This references the Stimulus controller defined in
@@ -31,8 +31,6 @@
 {% endblock %}
 
 {% block sidebar %}
-
-  {{ include('./home/navigate.html.twig') }}
-
-
+ {{ include('./partial/navigate.html.twig') }}
 {% endblock %}
+

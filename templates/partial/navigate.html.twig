@@ -1,4 +1,9 @@
 
+{% if(is_granted('ROLE_ADMIN')) %}
+    <a class="nav-link" href="{{ path('app_admin') }}">Users List & Roles</a> 
+    <a class="nav-link" href="{{ path('app_admin_user_register') }}">Add New User</a> 
+{% endif %}
+
 <a class="nav-link" href={{ path("app_list_case") }}>List of Cases </a>
 
 
@@ -6,16 +11,12 @@
     <a class="nav-link" href="{{ path('app_support_case') }}">Add Support Case</a> 
 {% endif %}
 
-{% if(is_granted('ROLE_ADMIN')) %}
-    {# <a class="nav-link" href="{{ path('app_admin') }}">Users List & Roles</a> 
-    <a class="nav-link" href="{{ path('app_admin_user_register') }}">Add New User</a> #}
-{% endif %}
 
 {# {% 
     set token = csrf_token('logout')
     
-%}
-{% endif %} #}
+%} #}
+{# {% endif %}  #}
 
 
 {% if(is_granted('ROLE_USER') or is_granted('ROLE_SPECIALIST')  or is_granted('ROLE_ADMIN')) %}

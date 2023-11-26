@@ -3,7 +3,7 @@
 {% block title %}Hello AdminController!{% endblock %}
 
 {% block main %}
-
+{{ include('./partial/welcome.html.twig') }}
 <h2> Users and Roles</h2>
 <div>
        {% for user in users %}
@@ -57,6 +57,5 @@
 {% endblock %}
 
 {% block sidebar %}
-  {{ include('./home/navigate.html.twig') }}
-
+ {{ include('./partial/navigate.html.twig') }}
 {% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}List All Support Cases!{% endblock %}
+
+{% block main %}
+{{ include('./partial/welcome.html.twig') }}
+<h3> Support Cases created by <strong>{{username}}</strong> </h3>
+
+
+{{ form_start(form, {attr: {'novalidate': 'novalidate','class':'mt-4'}}) }}
+    <div class="col">
+        {{ form_row(form.summary) }}
+    </div>
+    <div class="col">
+        {{ form_row(form.description) }}
+    </div>
+    {# <div class="col">
+        {{ form_row(form.user) }}
+    </div> #}
+    {% if(is_granted('ROLE_SPECIALIST') or is_granted('ROLE_ADMIN')) %}
+      <div class="col">
+          {{ form_row(form.status) }}
+      </div>
+    {% else %}
+    <div style="display:none" class="col">
+      {{ form_row(form.status) }}
+    </div>
+    {% endif %}
+
+    <div class="col">
+          {{ form_row(form.Submit) }}
+    </div>
+
+{{ form_end(form) }}
+
+{% endblock %}
+
+{% block sidebar %}
+ {{ include('./partial/navigate.html.twig') }}
+{% endblock %}

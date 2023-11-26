@@ -3,40 +3,63 @@
 {% block title %}Log in!{% endblock %}
 
 {% block main %}
+{{ include('./partial/welcome.html.twig') }}
 <h3> Add Support case</h3>
 
-
+{% if supportcases|length > 0 %}
 <div class="mb-4">
 
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">Summary</th>
-      <th scope="col">Userame</th>
-      <th scope="col">actions</th>
-    </tr>
-  </thead>
-  <tbody>
-   {% for cases in supportcases %}
-    <tr>
-      <th scope="row">{{ cases.summary  }}</th>
-      <td> {{cases.user.fullName }}</td>
-      <td>
-          {% if(is_granted('ROLE_SPECIALIST') or is_granted('ROLE_ADMIN')) %}
-             <a href={{ path("app_del_case",{'case':  cases.id}) }} class="btn btn-primary btn-sm active" role="button" aria-pressed="true"> Delete </a>
-             <a href={{ path("app_edit_case",{'case':  cases.id}) }} class="btn btn-primary btn-sm active" role="button" aria-pressed="true"> Edit </a>
-          {% endif %}
-      </td>
-    
-    </tr>
-   {% endfor %}
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Summary</th>
+        <th scope="col">Userame</th>
+        <th scope="col">Status</th>
+        <th scope="col">actions</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for cases in supportcases %}
+      <tr>
+        <th scope="row">{{ cases.summary  }}</th>
+        <td> {{cases.user.fullName }}</td>
+        <td> {{cases.status }}</td>
+        <td>
+            {% if(is_granted('ROLE_SPECIALIST') or is_granted('ROLE_ADMIN')) %}
+              <a href={{ path("app_del_case",{'case':  cases.id}) }} class="btn btn-primary btn-sm active" role="button" aria-pressed="true"> Delete </a>
+              <a href={{ path("app_edit_case",{'case':  cases.id}) }} class="btn btn-primary btn-sm active" role="button" aria-pressed="true"> Edit </a>
+            {% endif %}
+        </td>
+      
+      </tr>
+    {% endfor %}
 
-  </tbody>
-</table>
+    </tbody>
+  </table>
 </div>
-
+{% endif %}
 
 {{ form_start(form, {attr: {'novalidate': 'novalidate','class':'mt-4'}}) }}
+    <div class="col">
+        {{ form_row(form.summary) }}
+    </div>
+    <div class="col">
+        {{ form_row(form.description) }}
+    </div>
+
+    {% if(is_granted('ROLE_SPECIALIST') or is_granted('ROLE_ADMIN')) %}
+      <div class="col">
+          {{ form_row(form.status) }}
+      </div>
+    {% else %}
+    <div style="display:none" class="col">
+      {{ form_row(form.status) }}
+    </div>
+    {% endif %}
+
+    <div class="col">
+          {{ form_row(form.Submit) }}
+    </div>
 
 {{ form_end(form) }}
 
