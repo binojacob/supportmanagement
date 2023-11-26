@@ -6,22 +6,25 @@
     {{ include('./partial/welcome.html.twig') }}
     <h3>List of Support Cases</h3>
     
-    {{ form_start(form, {attr: {'novalidate': 'novalidate'}}) }}
-    <div class="row g-3 align-items-center col-4  mb-4 ">
-        <div class="col-auto">
-            {{ form_label(form.status, 'Filter By Status')}}
-        </div>
-        <div class="col-auto">
-            {{ form_widget(form.status,{'attr': {'style': 'float:left'}}) }}
-        </div>
-        <div class="col-auto">
-            <span id="passwordHelpInline" class="form-text">
-                {{ form_widget(form.Submit,{'attr' : {'class' : 'btn btn-primary btn-sm active' }}) }}
-            </span>
-        </div>
-        
-    </div>
-    {{ form_end(form) }}
+    {% if( is_granted('ROLE_ADMIN')) %}
+        {{ form_start(form, {attr: {'novalidate': 'novalidate'}}) }}
+            <div class="row g-3 align-items-center col-4  mb-4 ">
+                <div class="col-auto">
+                    {{ form_label(form.status, 'Filter By Status')}}
+                </div>
+                <div class="col-auto">
+                    {{ form_widget(form.status,{'attr': {'style': 'float:left'}}) }}
+                </div>
+                <div class="col-auto">
+                    <span id="passwordHelpInline" class="form-text">
+                        {{ form_widget(form.Submit,{'attr' : {'class' : 'btn btn-primary btn-sm active' }}) }}
+                    </span>
+                </div>
+                
+            </div>
+        {{ form_end(form) }}
+    {% endif %}
+
 
     {% if supportcases|length > 0 %}
         <table class="table mt-4">
@@ -60,8 +63,6 @@
 
             </tbody>
         </table>
-
-
     {% endif %}
 
 
