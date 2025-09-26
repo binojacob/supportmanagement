@@ -1,0 +1,54 @@
+name: PHP CI/CD
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-test-analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: oci8 # If needed for Oracle
+          coverage: xdebug
+      - name: Install Dependencies
+        run: composer install --no-interaction --prefer-dist
+      - name: Run Tests
+        run: ./vendor/bin/phpunit --coverage-clover coverage.xml
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v2.0.0
+        with:
+          projectBaseDir: .
+          args: >
+            -Dsonar.projectKey=my_php_project
+            -Dsonar.sources=.
+            -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
+            -Dsonar.token=${{ secrets.SONAR_TOKEN }}
+            -Dsonar.php.coverage.reportPaths=coverage.xml
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build-test-analyze # Ensure analysis passes before deployment
+    if: success() && github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to Server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /path/to/your/app
+            git pull origin main
+            composer install --no-dev
+            php artisan migrate --force
+            sudo service php8.x-fpm restart
