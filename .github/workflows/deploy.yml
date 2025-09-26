@@ -19,6 +19,10 @@ jobs:
           php-version: '8.2'
           extensions: oci8 # If needed for Oracle
           coverage: xdebug
+      - name: Install dependencies and run PHPUnit
+        run: |
+          composer install --no-interaction --prefer-dist
+          ./vendor/bin/phpunit
       - name: Install Dependencies
         run: composer install --no-interaction --prefer-dist
       - name: Run Tests
